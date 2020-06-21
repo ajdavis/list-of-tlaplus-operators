@@ -5,6 +5,7 @@ import sys
 
 # Each tuple is (LaTeX to be rendered, ASCII representation, description)
 symbols = [
+    # "Specifying Systems", Table 8: ascii representations of typeset symbols
     (r"\land", r"/\ or \land", r"and, conjunction"),
     (r"\lor", r"\/ or \lor", r"or, disjunction"),
     (r"{\lnot}", r"~ or \lnot or \neg", r"not"),
@@ -64,6 +65,8 @@ symbols = [
     (r"\neq", r"\div", r"not equal?"),
     (r"{\Box}", r"[]", r"always in the future/henceforth"),
     (r"{\Diamond}", r"<>", r"sometime(s) in the future/eventually"),
+
+    # From "Specifying Systems" index, not in Table 8
     (r"\leadsto", r"~>", r"leads to"),
     (r"E \whileop M", r"-+->",
      r"M remains true at least one step longer than E does"),
@@ -87,6 +90,45 @@ symbols = [
     (r"@", r"@", r"previous record field value (in EXCEPT expression)"),
     (r":>", r":>", r"TLC module explicit function operator"),
     (r"@@", r"@@", r"TLC module explicit function operator"),
+
+    # Greek
+    (r"\alpha", r"\alpha", "alpha"),
+    (r"\beta", r"\beta", "beta"),
+    (r"\gamma", r"\gamma", "gamma"),
+    (r"\Gamma", r"\Gamma", "Gamma"),
+    (r"\delta", r"\delta", "delta"),
+    (r"\Delta", r"\Delta", "Delta"),
+    (r"\epsilon", r"\epsilon", "epsilon"),
+    (r"\zeta", r"\zeta", "zeta"),
+    (r"\eta", r"\eta", "eta"),
+    (r"\theta", r"\theta", "theta"),
+    (r"\Theta", r"\Theta", "Theta"),
+    (r"\iota", r"\iota", "iota"),
+    (r"\kappa", r"\kappa", "kappa"),
+    (r"\lambda", r"\lambda", "lambda"),
+    (r"\Lambda", r"\Lambda", "Lambda"),
+    (r"\mu", r"\mu", "mu"),
+    (r"\nu", r"\nu", "nu"),
+    (r"o", r"o", "omicron"),
+    (r"\pi", r"\pi", "pi"),
+    (r"\Pi", r"\Pi", "Pi"),
+    (r"\rho", r"\rho", "rho"),
+    (r"\sigma", r"\sigma", "sigma"),
+    (r"\Sigma", r"\Sigma", "Sigma"),
+    (r"\tau", r"\tau", "tau"),
+    (r"\upsilon", r"\upsilon", "upsilon"),
+    (r"\Upsilon", r"\Upsilon", "Upsilon"),
+    (r"\phi", r"\phi", "phi"),
+    (r"\Phi", r"\Phi", "Phi"),
+    (r"\chi", r"\chi", "chi"),
+    (r"\psi", r"\psi", "psi"),
+    (r"\Psi", r"\Psi", "Psi"),
+    (r"\omega", r"\omega", "omega"),
+    (r"\Omega", r"\Omega", "Omega"),
+
+    # The Great, Big List of LATEX Symbols
+    # https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf
+
 ]
 
 print(f'{len(symbols)} symbols')
