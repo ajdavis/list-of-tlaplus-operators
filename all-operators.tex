@@ -962,13 +962,9 @@ in \\
 \@y{ $\backslash$notin} &
 not in \\
 
-\@x{ {\langle}} &
-\@y{ \textless\textless } &
-begin a set \\
-
-\@x{ {\rangle}} &
-\@y{ \textgreater\textgreater } &
-end a set \\
+\@x{ {\langle}x, y{\rangle}} &
+\@y{ \textless\textless x, y\textgreater\textgreater } &
+a tuple containing some x, y \\
 
 \@x{ \.{<}} &
 \@y{ \textless } &
@@ -1024,11 +1020,11 @@ subset or equal \\
 
 \@x{ \.{\sqsubset}} &
 \@y{ $\backslash$sqsubset } &
- \\
+is a refinement \\
 
 \@x{ \.{\sqsubseteq}} &
 \@y{ $\backslash$sqsubseteq } &
- \\
+is a refinement or equal \\
 
 \@x{ \.{\vdash}} &
 \@y{ \textbar- } &
@@ -1163,7 +1159,7 @@ implies \\
 
 \@x{ \.{\defeq}} &
 \@y{ == } &
- \\
+is equivalent \\
 
 \@x{ \.{\neq} } &
 \@y{ $\backslash$div } &
@@ -1191,7 +1187,7 @@ struct field maps to \\
 
 \@x{ \.{\div}} &
 \@y{ $\backslash$div } &
-divide? \\
+integer division \\
 
 \@x{ \.{\cdot}} &
 \@y{ $\backslash$cdot } &
@@ -1239,15 +1235,15 @@ concatenate sequences \\
 
 \@x{ x ^{ y}} &
 \@y{ x\^{}y } &
- \\
+exponentiation \\
 
 \@x{ x \.{\mbox{}^+}} &
 \@y{ x\^{}+ } &
- \\
+BNF grammar: at least one x \\
 
 \@x{ x \.{\mbox{}^*}} &
 \@y{ x\^{}* } &
- \\
+BNF grammar: any number of x's \\
 
 \@x{ x \.{\mbox{}^{\#}}} &
 \@y{ x\^{}\# } &
