@@ -128,7 +128,7 @@ symbols = [
 
     # The Great, Big List of LATEX Symbols
     # https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf
-
+    (r"\partial", r"\partial", "partial")
 ]
 
 print(f'{len(symbols)} symbols')
