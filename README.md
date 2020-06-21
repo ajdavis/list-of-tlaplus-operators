@@ -8,8 +8,15 @@ have learned it.
 
 A work in progress.
 
-Install and run
----------------
+Get pre-rendered flashcards
+---------------------------
+
+Install [Anki Desktop](https://ankiweb.net/). I've [shared the pre-rendered
+cards on AnkiWeb](https://ankiweb.net/shared/info/493978002) and I will try to
+keep them updated as I extend and correct the source file.  
+
+Generate PDF and flashcards
+---------------------------
 
 Requires Python 3.6 or later, and pdflatex. I've had success with pdflatex from
 [TeX Live](http://www.tug.org/texlive/) on Mac. 
@@ -17,14 +24,38 @@ Requires Python 3.6 or later, and pdflatex. I've had success with pdflatex from
 Run `all-operators.py` to generate a PDF and a CSV file. The latter
 is suitable for importing into Anki as flashcards.
 
+To create a set of flashcards from the CSV, install
+[Anki Desktop](https://ankiweb.net/).
 
+* In Anki Desktop, "Tools" -> "Manage Note Types", "Add".
+* Choose "Add: Basic (and reversed card)".
+* Name the new note type "TLA+", click "OK".
+* Highlight the new note type and click "Fields...". Add fields "Rendered TLA+", "ASCII", and "Meaning". Click "Close".
+* Highlight the new note type and click "Cards...". 
+* In the "Front Template" area put:
+```
+{{Rendered TLA+}}
+```
+* In the "Back Template" area put:
+```
+{{Meaning}}
+
+<hr id=answer>
+
+{{ASCII}}
+``` 
+* Leave the "Styling" area as-is. Click "Close". Close the "Note Types" dialog.
+* In the main Anki window, "Import File".
+* Choose `all-operators.csv`.
+* In the "Import" dialog choose "Type: TLA+". Ensure the "Field mapping" shows the proper order: "Rendered TLA+", "ASCII", "Meaning".
+* Click "Import".
 
 FAQ
 ---
 
 ## What about the other lists of TLA+ symbols?
 
-In "Specifying Systems", the table of ASCII representations and the symbols
-shown in the book's index are differently incomplete, and the same goes for the
-symbols in the TLA+ Toolkit's help. In this project I try to include all symbols
-I expect to encounter.
+In "Specifying Systems", the table of ASCII representations and the set of
+symbols shown in the book's index are differently incomplete, and the same goes
+for the symbols in the TLA+ Toolkit's help. In this project I try to include all 
+symbols I expect to encounter.
