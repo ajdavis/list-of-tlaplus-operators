@@ -1,3 +1,4 @@
+import csv
 import os
 import subprocess
 import sys
@@ -88,51 +89,70 @@ symbols = [
     (r"@@", r"@@", r"TLC module explicit function operator"),
 ]
 
-filename_base = 'all-operators'
-tex_file_name = f'{filename_base}.tex'
-pdf_file_name = f'{filename_base}.pdf'
-log_file_name = f'{filename_base}.log'
-preamble_file_name = f'{filename_base}-preamble.tex'
-
-f = open(tex_file_name, 'w')
-f.write(open(preamble_file_name).read())
-
-
-def writeline(s):
-    f.write(s)
-    f.write('\n')
-
-
-writeline(r'\begin{tabular}{ |c|c|c }')
-
 print(f'{len(symbols)} symbols')
 
-for i, (latex, plain, description) in enumerate(symbols):
-    escaped = plain.replace('\\', r'$\backslash$')
-    escaped = escaped.replace('_', r'\_')
-    escaped = escaped.replace('<', r'{\textless}')
-    escaped = escaped.replace('>', r'{\textgreater}')
-    escaped = escaped.replace('|', r'{\textbar}')
-    escaped = escaped.replace('^', r'{\textasciicircum}')
-    writeline(r'''\@x{ \.{%s} } &
-\@y{ %s } &
-%s \\
-''' % (latex, escaped, description))
+filename_base = 'all-operators'
 
-    if i > 0 and i % 50 == 0:
-        writeline(r'\end{tabular}')
-        writeline(r'\newpage')
-        writeline(r'\begin{tabular}{ |c|c|c }')
 
-writeline(r'\end{tabular}')
-writeline(r'\end{document}')
-f.close()
+def generate_pdf():
+    tex_file_name = f'{filename_base}.tex'
+    pdf_file_name = f'{filename_base}.pdf'
+    log_file_name = f'{filename_base}.log'
+    preamble_file_name = f'{filename_base}-preamble.tex'
 
-if os.path.exists(pdf_file_name):
-    os.remove(pdf_file_name)
+    f = open(tex_file_name, 'w')
+    f.write(open(preamble_file_name).read())
 
-rv = subprocess.call(['pdflatex', tex_file_name])
-if rv != 0:
-    print(f"pdflatex exited with code {rv}. Read {log_file_name}")
+    def writeline(s):
+        f.write(s)
+        f.write('\n')
 
-sys.exit(rv)
+    writeline(r'\begin{tabular}{ |c|c|c }')
+
+    for i, (latex, plain, description) in enumerate(symbols):
+        escaped = plain.replace('\\', r'$\backslash$')
+        escaped = escaped.replace('_', r'\_')
+        escaped = escaped.replace('<', r'{\textless}')
+        escaped = escaped.replace('>', r'{\textgreater}')
+        escaped = escaped.replace('|', r'{\textbar}')
+        escaped = escaped.replace('^', r'{\textasciicircum}')
+        writeline(r'''\@x{ \.{%s} } &
+    \@y{ %s } &
+    %s \\
+    ''' % (latex, escaped, description))
+
+        if i > 0 and i % 50 == 0:
+            writeline(r'\end{tabular}')
+            writeline(r'\newpage')
+            writeline(r'\begin{tabular}{ |c|c|c }')
+
+    writeline(r'\end{tabular}')
+    writeline(r'\end{document}')
+    f.close()
+
+    if os.path.exists(pdf_file_name):
+        os.remove(pdf_file_name)
+
+    rv = subprocess.call(['pdflatex', tex_file_name])
+    if rv == 0:
+        print(f"Generated {pdf_file_name}")
+    else:
+        print(f"pdflatex exited with code {rv}. Read {log_file_name}")
+
+    return rv
+
+
+def generate_csv():
+    csv_file_name = f'{filename_base}.csv'
+    writer = csv.writer(open(csv_file_name, 'w'), quoting=csv.QUOTE_ALL)
+    for latex, plain, description in symbols:
+        writer.writerow((latex, plain, description))
+
+    print(f"Generated {csv_file_name}")
+    return 0
+
+
+for fn in generate_pdf, generate_csv:
+    fn_return_val = fn()
+    if fn_return_val != 0:
+        sys.exit(fn_return_val)
