@@ -18,14 +18,23 @@ keep them updated as I extend and correct the source file.
 Generate PDF and flashcards
 ---------------------------
 
-Requires Python 3.6 or later, and pdflatex. I've had success with pdflatex from
-[TeX Live](http://www.tug.org/texlive/) on Mac. 
+Requires Python 3.6 or later, and pdflatex. On Mac:
+
+```
+brew cask install basictex
+```
 
 Run `all-operators.py` to generate a PDF and a CSV file. The latter
 is suitable for importing into Anki as flashcards.
 
 To create a set of flashcards from the CSV, install
-[Anki Desktop](https://ankiweb.net/).
+[Anki Desktop](https://ankiweb.net/). On Mac you need also `basictex` and
+`dvipng` to create LaTeX flashcards: 
+
+```
+brew cask install basictex
+sudo tlmgr update --self; sudo tlmgr install dvipng
+```
 
 * In Anki Desktop, "Tools" -> "Manage Note Types", "Add".
 * Choose "Add: Basic (and reversed card)".
