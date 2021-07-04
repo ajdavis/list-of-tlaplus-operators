@@ -30,8 +30,8 @@ symbols = [
     (r"\sqsubseteq", r"\sqsubseteq", r"\sqsubseteq",
      r"bag subset or equal/is a refinement or equal?"),
     (r"A \vdash B", r"A \vdash B", r"|-", r"B can be derived from A?"),
-    (r"\models", r"\models", r"|=", r"satisfies/models a temporal formula"),
-    (r"\rightarrow", r"\rightarrow", r"->", r"set of functions/step"),
+    (r"[S\rightarrow T]", r"[S\rightarrow T]", r"[S -> T]", r"set of functions"),
+    (r"\rightarrow", r"\rightarrow", r"->", r"step"),
     (r"\cap", r"\cap", r"\cap or \intersect", r"intersection"),
     (r"\sqcap", r"\sqcap", r"\sqcap", r""),
     (r"\oplus", r"\oplus", r"(+) or \oplus", r"bag union"),
@@ -45,7 +45,8 @@ symbols = [
      r"\makebox{$\raisebox{.05em}{\makebox[0pt][l]{$\exists\hspace{-.517em}\exists\hspace{-.517em}\exists$}}\exists\hspace{-.517em}\exists\hspace{-.517em}\exists\,$}",
      r"\EE",
      r"temporal existential quantification, 'hiding'"),
-    (r"[A]_{ v}", r"[A]_{ v}", r"[A]_v", r"action operator, 'square A sub v'"),
+    (r"f[e]", r"f[e]", r"f[e]", "function application"),
+    (r"[A]_{ v}", r"[A]_{ v}", r"[A]_v", r"action operator, 'square A sub v', A happens or v is unchanged, equiv to [A \/ v' = v]"),
     (r"{\WF}_{ v}", r"WF_{v}", r"WF_v", r"weak fairness variables"),
     (r"{\SF}_{ v}", r"SF_{v}", r"SF_v", r"strong fairness variables"),
     (r"\supseteq", r"\supseteq", r"\supseteq", r"superset"),
@@ -53,7 +54,7 @@ symbols = [
     (r"\sqsupset", r"\sqsupset", r"\sqsupset", r"bag superset"),
     (r"\sqsupseteq", r"\sqsupseteq", r"\sqsupseteq", r"bag superset or equal"),
     (r"\dashv", r"\dashv", r"-|", r""),
-    (r"\eqdash", r"\eqdash", r"=|", r""),
+    (r"\models", r"\models", r"|=", r"models/satisfies a temporal formula"),
     (r"\leftarrow", r"\leftarrow", r"<-", r"substitution"),
     (r"\cup", r"\cup", r"\cup or \union", r"union"),
     (r"\sqcup", r"\sqcup", r"\sqcup", r""),
@@ -65,11 +66,12 @@ symbols = [
     (r"{\AA}",
      r"\makebox{$\raisebox{.05em}{\makebox[0pt][l]{$\forall\hspace{-.517em}\forall\hspace{-.517em}\forall$}}\forall\hspace{-.517em}\forall \hspace{-.517em}\forall\,$}",
      r"\AA", r"temporal universal quantification"),
+    # https://www.hillelwayne.com/post/fairness/#appendix-formalizing-fairness
     (r"{\langle}A{\rangle}_{ v}", r"{\langle}A{\rangle}_{ v}", r"<<A>>_v",
-     r"action operator, 'angle A sub v', TODO"),
+     r"action operator, 'angle A sub v', A happens and v changes, equiv to [A /\ v' \# v]"),
     (r"\implies", r"\implies", r"=>", r"implies"),
     (r"\defeq", r"\;\mathrel{\smash{{\stackrel{\scriptscriptstyle\Delta}{=}}}}\;", r"==", r"is equivalent"),
-    (r"\neq", r"\neq", r"\div", r"not equal?"),
+    (r"\neq", r"\neq", r"\neq or #", r"not equal"),
     (r"{\Box}", r"{\Box}", r"[]", r"always in the future/henceforth"),
     (r"{\Diamond}", r"{\Diamond}", r"<>",
      r"sometime(s) in the future/eventually"),
@@ -77,27 +79,32 @@ symbols = [
     # From "Specifying Systems" index, not in Table 8
     (r"\leadsto", r"\leadsto", r"~>", r"leads to"),
     (r"E \whileop M", r"E \stackrel{\mbox{\raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle+\;\,$}}}{-\hspace{-.16em}\triangleright} M", r"-+->",
-     r"M remains true at least one step longer than E does"),
-    (r"\mapsto", r"\mapsto", r"|->", r"function/record constructor"),
+     r"E guarantees M: M remains true at least one step longer than E does"),
+    (r"[h_1 \-> e_1, ..., h_n \mapsto e_n]", r"[h_1 \mapsto e_1, ..., h_n \mapsto e_n]", r"[h_1 |-> e_1, ..., h_n |-> e_n]", r"function/record constructor"),
+    (r"[x \in S |-> e]", r"[x \in S \mapsto e]", r"[x \in S |-> e]", r"function constructor"),
+    (r"[h_1 : S_1, ..., h_n : S_n]", r"[h_1 : S_1, ..., h_n : S_n]", r"[h1: s1, ..., hn: sn]", r"set of records"),
+    (r"{}", r"\{\}", r"{}", r"empty set"),
+    (r"{e_1, ..., e_n}", r"{e_1, ..., e_n}", r"{e1, ..., en}", r"set"),
+    (r"{x \in S : p}", r"\{x \in S : p\}", r"{x \in S : p}", r"set constructor"),
+    (r"{e: x \in S}", r"\{e: x \in S\}", r"{e: x \in S}", r"set constructor"),
     (r"\div", r"\div", r"\div", r"integer division"),
     (r"\cdot", r"\cdot", r"\cdot", r"composition of actions"),
     (r"\circ", r"\circ", r"\o or \circ", r"concatenate sequences"),
     (r"\bullet", r"\bullet", r"\doteq", r""),
     (r"\star", r"\star", r"\star", r""),
     (r"\bigcirc", r"\bigcirc", r"\bigcirc", r""),
-    (r"\sim", r"\sim", r"\sim", r"stuttering equivalent"),
     (r"\simeq", r"\simeq", r"\sim", r"stuttering equivalent"),
     (r"\asymp", r"\asymp", r"\asymp", r""),
     (r"\approx", r"\approx", r"\approx", r""),
     (r"\cong", r"\cong", r"\cong", r""),
     (r"\doteq", r"\doteq", r"\doteq", r""),
-    (r"x ^{ y}", r"x ^{ y}", r"x\^{}y", r"exponentiation"),
+    (r"x ^{ y}", r"x ^{ y}", r"x^y", r"exponentiation"),
     (r"'", r"'", r"'", r"prime"),
     (r"\sim", r"\sim", r"\sim", r"stuttering equivalent"),
     (r"!", r"!", r"!", r"new record (in EXCEPT expression)"),
     (r"@", r"@", r"@", r"previous record field value (in EXCEPT expression)"),
-    (r":>", r":>", r":>", r"TLC module explicit function operator"),
-    (r"@@", r"@@", r"@@", r"TLC module explicit function operator"),
+    (r":>", r":>", r":>", r"One key-value mapping in a function (TLC module)"),
+    (r"@@", r"@@", r"@@", r"Function composition (TLC module)"),
 
     # Greek, and most variants but not the rarely-used ones.
     (r"\alpha", r"\alpha", r"\alpha", "alpha"),
@@ -141,7 +148,12 @@ symbols = [
 
     # The Great, Big List of LATEX Symbols
     # https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf
-    (r"\partial", r"\partial", r"\partial", "partial")
+    (r"\partial", r"\partial", r"\partial", "partial"),
+
+    # TODO: is "_" a piece of syntax? for e.g. apply(op(_,_)) == op(1,2)?
+    # https://groups.google.com/d/msgid/tlaplus/d7826de2-40f7-4224-9c84-2dd3c38bec70n%40googlegroups.com
+
+    # TODO: there are two \sim rows, delete one?
 ]
 
 print(f'{len(symbols)} symbols')
@@ -166,6 +178,7 @@ def generate_pdf():
 
     for i, (tla_plus, latex, plain, description) in enumerate(symbols):
         escaped = plain.replace('\\', r'$\backslash$')
+        escaped = escaped.replace('#', r'\#')
         escaped = escaped.replace('_', r'\_')
         escaped = escaped.replace('<', r'{\textless}')
         escaped = escaped.replace('>', r'{\textgreater}')
