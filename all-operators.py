@@ -39,18 +39,18 @@ symbols = [
     (r"\odot", r"\odot", r"(.) or \odot", r""),
     (r"\otimes", r"\otimes", r"(\X) \otimes", r"Cartesian product"),
     (r"\oslash", r"\oslash", r"(/) or \oslash", r""),
-    (r"\E", r"\exists", r"\E", r"there exists"),
+    (r"\E", r"\exists", r"\E", r"existential quantification (there exists)"),
     (r"\exists!", r"\exists!", r"\exists!", r"there exists exactly one"),
     (r"{\EE}",
      r"\makebox{$\raisebox{.05em}{\makebox[0pt][l]{$\exists\hspace{-.517em}\exists\hspace{-.517em}\exists$}}\exists\hspace{-.517em}\exists\hspace{-.517em}\exists\,$}",
      r"\EE",
      r"temporal existential quantification, 'hiding'"),
     (r"f[e]", r"f[e]", r"f[e]", "function application"),
-    (r"[A]_{ v}", r"[A]_{ v}", r"[A]_v", r"action operator, 'square A sub v', A happens or v is unchanged, equiv to [A \/ v' = v]"),
+    (r"[A]_{ v}", r"[A]_{ v}", r"[A]_v", r"action operator, 'square A sub v', A happens or v is unchanged, [A \/ v' = v], allows stuttering"),
     (r"{\WF}_{ v}", r"WF_{v}", r"WF_v", r"weak fairness variables"),
     (r"{\SF}_{ v}", r"SF_{v}", r"SF_v", r"strong fairness variables"),
     (r"\supseteq", r"\supseteq", r"\supseteq", r"superset"),
-    (r"\supset", r"\supset", r"\supset", r"superset or equals"),
+    (r"\supset", r"\supset", r"\supset", r"superset"),
     (r"\sqsupset", r"\sqsupset", r"\sqsupset", r"bag superset"),
     (r"\sqsupseteq", r"\sqsupseteq", r"\sqsupseteq", r"bag superset or equal"),
     (r"\dashv", r"\dashv", r"-|", r""),
@@ -62,13 +62,13 @@ symbols = [
     (r"\times", r"\times", r"\X or \times", r"multiply"),
     (r"\wr", r"\wr", r"\wr", r""),
     (r"\propto", r"\propto", r"\propto", r"propositional something?"),
-    (r"\A", r"\forall", r"\A", r"for all"),
+    (r"\A", r"\forall", r"\A", r"universal quantification (for all)"),
     (r"{\AA}",
      r"\makebox{$\raisebox{.05em}{\makebox[0pt][l]{$\forall\hspace{-.517em}\forall\hspace{-.517em}\forall$}}\forall\hspace{-.517em}\forall \hspace{-.517em}\forall\,$}",
      r"\AA", r"temporal universal quantification"),
     # https://www.hillelwayne.com/post/fairness/#appendix-formalizing-fairness
     (r"{\langle}A{\rangle}_{ v}", r"{\langle}A{\rangle}_{ v}", r"<<A>>_v",
-     r"action operator, 'angle A sub v', A happens and v changes, equiv to [A /\ v' \# v]"),
+     r"action operator, 'angle A sub v', A happens and v changes, [A /\ v' \# v]"),
     (r"\implies", r"\implies", r"=>", r"implies"),
     (r"\defeq", r"\;\mathrel{\smash{{\stackrel{\scriptscriptstyle\Delta}{=}}}}\;", r"==", r"is equivalent"),
     (r"\neq", r"\neq", r"\neq or #", r"not equal"),
@@ -77,6 +77,10 @@ symbols = [
      r"sometime(s) in the future/eventually"),
 
     # From "Specifying Systems" index, not in Table 8
+    (r"n .. m", r"n .. m", r"n .. m", r"integer interval, n to m inclusive (Naturals module)"),
+    (r"x", r"x", r"x", r"operator of arity 2"),
+    (r"SUBSET S", r"SUBSET S", r"SUBSET S", r"set of all subsets of S"),
+    (r"CHOOSE x \in S : p", r"CHOOSE x \in S : p", r"CHOOSE x \in S : p", r"Choose x such that x is in S, and p is TRUE"),
     (r"\leadsto", r"\leadsto", r"~>", r"leads to"),
     (r"E \whileop M", r"E \stackrel{\mbox{\raisebox{-.3em}[0pt][0pt]{$\scriptscriptstyle+\;\,$}}}{-\hspace{-.16em}\triangleright} M", r"-+->",
      r"E guarantees M: M remains true at least one step longer than E does"),
@@ -88,7 +92,7 @@ symbols = [
     (r"{x \in S : p}", r"\{x \in S : p\}", r"{x \in S : p}", r"set constructor"),
     (r"{e: x \in S}", r"\{e: x \in S\}", r"{e: x \in S}", r"set constructor"),
     (r"\div", r"\div", r"\div", r"integer division"),
-    (r"\cdot", r"\cdot", r"\cdot", r"composition of actions"),
+    (r"A \cdot B", r"A \cdot B", r"A \cdot B", r"composition of actions, executing A then B as one step"),
     (r"\circ", r"\circ", r"\o or \circ", r"concatenate sequences"),
     (r"\bullet", r"\bullet", r"\doteq", r""),
     (r"\star", r"\star", r"\star", r""),
@@ -161,11 +165,30 @@ print(f'{len(symbols)} symbols')
 filename_base = 'all-operators'
 
 
+def escape(s):
+    return (s.replace('\\', r'$\backslash$')
+            .replace('#', r'\#')
+            .replace('_', r'\_')
+            .replace('<', r'{\textless}')
+            .replace('>', r'{\textgreater}')
+            .replace('|', r'{\textbar}')
+            .replace('^', r'{\textasciicircum}')
+            .replace('(', r'{(}')
+            .replace(')', r'{)}')
+            )
+
+
 def generate_pdf():
     tex_file_name = f'{filename_base}.tex'
     pdf_file_name = f'{filename_base}.pdf'
     log_file_name = f'{filename_base}.log'
     preamble_file_name = f'{filename_base}-preamble.tex'
+
+    for file_name in (tex_file_name, pdf_file_name, log_file_name):
+        try:
+            os.remove(file_name)
+        except FileNotFoundError:
+            pass
 
     f = open(tex_file_name, 'w')
     f.write(open(preamble_file_name).read())
@@ -177,17 +200,10 @@ def generate_pdf():
     writeline(r'\begin{tabular}{ |c|c|c }')
 
     for i, (tla_plus, latex, plain, description) in enumerate(symbols):
-        escaped = plain.replace('\\', r'$\backslash$')
-        escaped = escaped.replace('#', r'\#')
-        escaped = escaped.replace('_', r'\_')
-        escaped = escaped.replace('<', r'{\textless}')
-        escaped = escaped.replace('>', r'{\textgreater}')
-        escaped = escaped.replace('|', r'{\textbar}')
-        escaped = escaped.replace('^', r'{\textasciicircum}')
         writeline(r'''\@x{ \.{%s} } &
     \@y{ %s } &
     %s \\
-    ''' % (tla_plus, escaped, description))
+    ''' % (tla_plus, escape(plain), escape(description)))
 
         if i > 0 and i % 50 == 0:
             writeline(r'\end{tabular}')
@@ -197,9 +213,6 @@ def generate_pdf():
     writeline(r'\end{tabular}')
     writeline(r'\end{document}')
     f.close()
-
-    if os.path.exists(pdf_file_name):
-        os.remove(pdf_file_name)
 
     rv = subprocess.call(['pdflatex', tex_file_name])
     if rv == 0:
