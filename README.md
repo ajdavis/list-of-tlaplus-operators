@@ -66,5 +66,6 @@ FAQ
 
 In "Specifying Systems", the table of ASCII representations and the set of
 symbols shown in the book's index are differently incomplete, and the same goes
-for the symbols in the TLA+ Toolkit's help. In this project I try to include all 
-symbols I expect to encounter.
+for the symbols in the TLA+ Toolkit's help and this
+[list](https://github.com/tlaplus/tlaplus-standard/blob/main/unicode/tla-unicode.csv). In this
+project I try to include all symbols I expect to ever encounter.
